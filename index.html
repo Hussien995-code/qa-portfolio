@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="QA engineering portfolio — test strategy, automation, and quality practices for modern software teams.">
+  <title>Sam A. — QA Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="scripts/main.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="site-header__mark" href="#top">S.A.</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#skills">Skills</a>
+        <a href="#qa-lab">QA Lab</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero__content">
+          <p class="hero__eyebrow">QA Engineer</p>
+          <h1 id="hero-title" class="hero__headline">Quality as a craft, not a checklist.</h1>
+          <p class="hero__lede">I help engineering teams ship with confidence — through deliberate test strategy, reliable automation, and quality practices that scale with the product.</p>
+          <div class="hero__actions">
+            <a href="#qa-lab" class="btn btn--primary">Enter QA Lab</a>
+            <a href="#contact" class="btn btn--ghost">Get in touch →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section skills" aria-labelledby="skills-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-header__eyebrow">Skills</p>
+          <h2 id="skills-title" class="section-header__title">A quality practice, end to end.</h2>
+        </header>
+        <div class="skills__grid">
+          <article class="skill-card" data-id="core">
+            <div class="skill-card__beam"></div>
+            <div class="skill-card__inner">
+            <header class="skill-card__header">
+              <p class="skill-card__index">FLOW</p>
+              <h3 class="skill-card__title">Core Testing</h3>
+            </header>
+            <ul class="skill-card__list">
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Functional Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Verifying each feature behaves per its specification.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Submit a login form with valid credentials.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Session is created; user is routed to the authenticated view.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Regression Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Risk</span>Recent changes silently breaking previously working paths.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Re-run prior test suites after a production deploy.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">All previously passing cases still pass without modification.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Exploratory Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Finding defects no scripted case would anticipate.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Interact with a new feature without a plan; vary inputs and timing.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Unscripted behavior surfaces gaps beyond the formal test matrix.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">UI/UX Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Risk</span>Visual regressions and interaction quirks across viewports.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Resize the viewport from 320px to 1440px while inspecting spacing.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Layout remains legible and intact at every breakpoint.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Usability Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>How real users complete real tasks without guidance.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Give a new user a task and observe without intervening.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">The task is completed in under 90 seconds, unaided.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">UAT (User Acceptance Testing)</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Risk</span>Stakeholder expectations diverging from delivered scope.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Walk stakeholders through end-to-end business scenarios.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Every acceptance criterion is signed off before release.</span></div>
+                </div></div></div>
+              </li>
+            </ul>
+            </div>
+          </article>
+
+          <article class="skill-card" data-id="api">
+            <div class="skill-card__beam"></div>
+            <div class="skill-card__inner">
+            <header class="skill-card__header">
+              <p class="skill-card__index">REQ</p>
+              <h3 class="skill-card__title">API &amp; Integration</h3>
+            </header>
+            <ul class="skill-card__list">
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">API Testing (Postman)</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Contract correctness at the boundary between services.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">POST /users with an invalid email; capture the response.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">400 with a clear validation error; no partial write occurs.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Integration Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Risk</span>Services working in isolation but failing when composed.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Trigger an order flow that writes to inventory and billing together.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Both systems remain consistent even when one call fails.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Bug Reporting</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>If it can't be reproduced, it can't be fixed.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">File a defect with steps, environment, expected, and actual.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">A developer can reproduce the issue on the first attempt.</span></div>
+                </div></div></div>
+              </li>
+            </ul>
+            </div>
+          </article>
+
+          <article class="skill-card" data-id="platforms">
+            <div class="skill-card__beam"></div>
+            <div class="skill-card__inner">
+            <header class="skill-card__header">
+              <p class="skill-card__index">TARGET</p>
+              <h3 class="skill-card__title">Platforms</h3>
+            </header>
+            <ul class="skill-card__list">
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Web Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Risk</span>Behavior diverging across browsers despite shared specs.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Run the critical path in Chrome, Firefox, and Safari.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Behavior is consistent across all three engines.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Mobile Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Risk</span>Gesture, orientation, and network variance across devices.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Rotate the device mid-flow and toggle network connectivity.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">State persists; the app handles interruptions gracefully.</span></div>
+                </div></div></div>
+              </li>
+            </ul>
+            </div>
+          </article>
+
+          <article class="skill-card" data-id="tools">
+            <div class="skill-card__beam"></div>
+            <div class="skill-card__inner">
+            <header class="skill-card__header">
+              <p class="skill-card__index">OPS</p>
+              <h3 class="skill-card__title">Tools</h3>
+            </header>
+            <ul class="skill-card__list">
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Postman</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Collection-based test organization that scales with the API.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Organize requests into folders and apply environment variables.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">A new teammate can run the full collection without setup.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Appium</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Unified test code targeting both iOS and Android.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Run the same test suite against iOS and Android builds.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Both platforms pass without platform-specific forks in test code.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Jira</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Traceability from requirement to defect to release.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Link a bug to its source story and verification build.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Every defect traces to a story and a specific build number.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Android Studio</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Layout inspection and network profiling during test runs.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Capture a profiler trace while reproducing a slow interaction.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">The bottleneck is identified with measurable evidence, not guesswork.</span></div>
+                </div></div></div>
+              </li>
+            </ul>
+            </div>
+          </article>
+
+          <article class="skill-card" data-id="process">
+            <div class="skill-card__beam"></div>
+            <div class="skill-card__inner">
+            <header class="skill-card__header">
+              <p class="skill-card__index">TRACE</p>
+              <h3 class="skill-card__title">QA Process</h3>
+            </header>
+            <ul class="skill-card__list">
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Test Planning</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Scope, risk, and exit criteria written before execution begins.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Draft a plan covering scope, entry/exit criteria, and risks.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">The plan is reviewed and signed off before test design starts.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Test Strategy</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Aligning testing depth to product risk, not to habit.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Map product areas to risk levels and assign test depth accordingly.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Higher-risk areas receive deeper coverage; lower-risk areas, less.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">SDLC</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Where testing fits in each delivery phase.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Identify quality checkpoints in every SDLC phase.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Each phase has a defined quality gate with measurable criteria.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">STLC</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>A disciplined lifecycle from planning to closure.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Move a feature through plan, design, execute, and closure stages.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Each stage produces defined deliverables and traceable outputs.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Test Cases</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Anyone on the team should be able to execute the case.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Write a case with preconditions, steps, and expected result.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">A tester unfamiliar with the feature can follow it without questions.</span></div>
+                </div></div></div>
+              </li>
+            </ul>
+            </div>
+          </article>
+
+          <article class="skill-card" data-id="advanced">
+            <div class="skill-card__beam"></div>
+            <div class="skill-card__inner">
+            <header class="skill-card__header">
+              <p class="skill-card__index">LOAD</p>
+              <h3 class="skill-card__title">Advanced Testing</h3>
+            </header>
+            <ul class="skill-card__list">
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Performance Testing (Spike, Endurance)</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Risk</span>Systems that pass functional tests but buckle under real load.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Apply sudden traffic bursts (spike) and prolonged load (endurance).</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">Response times stay within SLA; no memory leaks over time.</span></div>
+                </div></div></div>
+              </li>
+              <li class="skill" data-open="false">
+                <button class="skill__name" type="button" aria-expanded="false">Load Testing</button>
+                <span class="skill__insight" role="tooltip"><span class="skill__insight-label">Focus</span>Verified capacity under expected production traffic.</span>
+                <div class="skill__test" aria-hidden="true"><div class="skill__test-inner"><div class="skill__test-body">
+                  <div class="skill__test-row"><span class="skill__test-key">Action</span><span class="skill__test-value">Drive traffic to expected peak volume for 30 minutes.</span></div>
+                  <div class="skill__test-row"><span class="skill__test-key">Expected</span><span class="skill__test-value">System sustains the load with stable throughput and error rate.</span></div>
+                </div></div></div>
+              </li>
+            </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="qa-lab" class="section qa-lab" aria-labelledby="qa-lab-title">
+      <div class="container">
+        <div class="qa-lab__card">
+          <p class="qa-lab__status">
+            <span class="qa-lab__dot" aria-hidden="true"></span>
+            QA Lab — in development
+          </p>
+          <h2 id="qa-lab-title" class="qa-lab__title">An interactive QA challenge.</h2>
+          <p class="qa-lab__copy">A hands-on simulation of real testing scenarios — bugs to triage, flows to break, and decisions to make under pressure. Launching soon.</p>
+          <div id="qa-lab-root" class="qa-lab__mount" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="qa-notice" role="status" aria-live="polite" data-visible="false">State inconsistency detected</div>
+
+  <footer id="contact" class="site-footer">
+    <div class="container site-footer__inner">
+      <p>© 2026 Sam A.</p>
+      <p><a href="mailto:sam.a@affinitysolutions.ca">sam.a@affinitysolutions.ca</a></p>
+    </div>
+  </footer>
+</body>
+</html>
