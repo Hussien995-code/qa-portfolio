@@ -200,26 +200,8 @@
 
   function scrollTicketIntoView() {
     const ticket = tickets[index];
-    // Move focus to the new ticket's heading (preventScroll — a plain
-    // .focus() here can't scroll on its own) — the useful landing point
-    // for keyboard/AT users regardless of the scroll bug below.
     ticket.querySelector('.ticket__title')?.focus?.({ preventScroll: true });
-    // scrollIntoView() called synchronously right after render() toggles
-    // `hidden` was consistently landing partway into the ticket instead of
-    // at its top — reproducible across both smooth and instant `behavior`,
-    // and regardless of focus ordering, so it isn't an animation/focus
-    // interruption. Deferring to the next frame and computing the target
-    // manually sidesteps whatever stale-geometry timing caused it: by the
-    // time this runs, the browser has fully committed the show/hide layout
-    // change from render().
-    requestAnimationFrame(() => {
-      const scrollYBefore = window.scrollY;
-      const scrollPaddingTop = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-      const rectTop = ticket.getBoundingClientRect().top;
-      const targetY = scrollYBefore + rectTop - scrollPaddingTop;
-      window.scrollTo({ top: Math.max(0, targetY), behavior: 'auto' });
-      document.body.dataset.qaLabDebug = JSON.stringify({ index, scrollYBefore, rectTop, scrollPaddingTop, targetY, scrollYAfter: window.scrollY });
-    });
+    ticket.scrollIntoView({ behavior: 'auto', block: 'start' });
   }
 
   const showNotice = (text) => {
