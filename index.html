@@ -15,8 +15,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="styles/main.css?v=5">
-  <script src="scripts/main.js?v=5" defer></script>
+  <link rel="stylesheet" href="styles/main.css?v=15">
+  <script src="scripts/main.js?v=15" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -25,25 +25,33 @@
         <span class="site-header__mark-text" aria-label="Name">Hussien Altarabeen</span>
         <span class="site-header__mark-cursor" aria-hidden="true"></span>
       </a>
-      <nav class="site-nav" aria-label="Primary">
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
         <a href="#skills">Skills</a>
         <a href="#qa-lab">QA Lab</a>
         <a href="#contact">Contact</a>
       </nav>
+      <button type="button" class="site-nav__toggle" id="site-nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
     </div>
   </header>
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="container">
+      <div class="container hero__grid">
         <div class="hero__content">
           <p class="hero__eyebrow">QA Engineer</p>
-          <h1 id="hero-title" class="hero__headline">Quality as a craft, not a checklist.</h1>
+          <h1 id="hero-title" class="hero__headline">Quality as a craft,<br>not a checklist.</h1>
           <p class="hero__lede">I help engineering teams ship with confidence — through deliberate test strategy, reliable automation, and quality practices that scale with the product.</p>
           <div class="hero__actions">
             <a href="#qa-lab" class="btn btn--primary">Enter QA Lab</a>
             <a href="#contact" class="btn btn--ghost">Get in touch →</a>
           </div>
+        </div>
+        <div class="hero__portrait">
+          <img class="hero__portrait-img" src="assets/portrait-cutout.png" alt="Portrait of Hussien Altarabeen" width="900" height="866" loading="eager" fetchpriority="high">
         </div>
       </div>
     </section>
