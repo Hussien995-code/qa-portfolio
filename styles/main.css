@@ -916,14 +916,17 @@ a:focus-visible,
   transition: transform 120ms ease, color 120ms ease;
 }
 .skill__name::after {
-  content: "→";
+  content: "";
   display: inline-block;
-  margin-left: 0.4375rem;
-  font-size: 0.75rem;
+  width: 5px;
+  height: 5px;
+  margin-left: 0.5rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
   opacity: 0;
-  transform: translateX(-4px);
+  transform: translateX(-4px) rotate(-45deg);
   transition: opacity 150ms ease, transform 150ms ease;
-  vertical-align: baseline;
+  vertical-align: middle;
 }
 .skill:hover .skill__name,
 .skill:focus-within .skill__name {
@@ -933,11 +936,11 @@ a:focus-visible,
 .skill:hover .skill__name::after,
 .skill:focus-within .skill__name::after {
   opacity: 0.6;
-  transform: translateX(0);
+  transform: translateX(0) rotate(-45deg);
 }
 .skill[data-open="true"] .skill__name::after {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) rotate(-45deg);
 }
 .skill[data-open="true"] .skill__name {
   color: var(--c-text);
