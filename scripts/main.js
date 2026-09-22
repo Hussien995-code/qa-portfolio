@@ -173,3 +173,157 @@
     }
   });
 })();
+
+(() => {
+  /* ==================== QA LAB: BUG TRIAGE ==================== */
+  const root = document.getElementById('qa-lab-root');
+  if (!root) return;
+
+  const tickets = Array.from(root.querySelectorAll('.ticket'));
+  const total = tickets.length;
+  const currentEl = document.getElementById('qa-lab-current');
+  const tallyEl = document.getElementById('qa-lab-tally');
+  const progressFill = document.getElementById('qa-lab-progress-fill');
+  const backBtn = document.getElementById('qa-lab-back');
+  const nextBtn = document.getElementById('qa-lab-next');
+  const notice = document.querySelector('.qa-notice');
+
+  const VERDICT_LABELS = {
+    defect: 'Genuine defect',
+    expected: 'Expected behavior',
+    'needs-info': 'Needs more information',
+  };
+
+  let index = 0;
+  let noticeTimer = null;
+
+  const showNotice = (text) => {
+    if (!notice) return;
+    notice.textContent = text;
+    notice.dataset.visible = 'true';
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => { notice.dataset.visible = 'false'; }, 2600);
+  };
+
+  const isSubmitted = (ticket) => ticket.querySelector('.ticket__resolution').hidden === false;
+
+  function updateTally() {
+    const submitted = tickets.filter(isSubmitted);
+    if (submitted.length === 0) {
+      tallyEl.hidden = true;
+      return;
+    }
+    const matched = submitted.filter((t) => t.querySelector('.ticket__resolution').dataset.match === 'true').length;
+    tallyEl.hidden = false;
+    tallyEl.textContent = `Verdict matched the actual resolution on ${matched} of ${submitted.length} so far`;
+  }
+
+  function render() {
+    tickets.forEach((t, i) => { t.hidden = i !== index; });
+    currentEl.textContent = String(index + 1);
+    progressFill.style.width = `${((index + 1) / total) * 100}%`;
+    backBtn.disabled = index === 0;
+
+    const current = tickets[index];
+    const submitted = isSubmitted(current);
+    const isLast = index === total - 1;
+
+    if (isLast && submitted) {
+      nextBtn.textContent = 'Restart exercise';
+      nextBtn.dataset.mode = 'restart';
+      nextBtn.disabled = false;
+    } else {
+      nextBtn.textContent = 'Next report →';
+      nextBtn.dataset.mode = 'next';
+      nextBtn.disabled = !submitted;
+    }
+  }
+
+  function evaluateSubmitEnabled(ticket, idx) {
+    const submitBtn = ticket.querySelector('.ticket__submit');
+    const verdict = ticket.querySelector(`input[name="verdict-${idx}"]:checked`);
+    if (!verdict) { submitBtn.disabled = true; return; }
+    if (verdict.value === 'defect') {
+      const severity = ticket.querySelector(`input[name="severity-${idx}"]:checked`);
+      submitBtn.disabled = !severity;
+    } else {
+      submitBtn.disabled = false;
+    }
+  }
+
+  function submitTicket(ticket) {
+    const idx = ticket.dataset.index;
+    const verdictInput = ticket.querySelector(`input[name="verdict-${idx}"]:checked`);
+    if (!verdictInput) return;
+    const verdict = verdictInput.value;
+    const match = verdict === ticket.dataset.correctVerdict;
+
+    ticket.querySelectorAll('input[type="radio"]').forEach((input) => { input.disabled = true; });
+
+    const resolution = ticket.querySelector('.ticket__resolution');
+    ticket.querySelector('.ticket__resolution-you-value').textContent = VERDICT_LABELS[verdict];
+    resolution.dataset.match = String(match);
+    resolution.hidden = false;
+    ticket.querySelector('.ticket__submit').hidden = true;
+
+    showNotice(`Assessment logged — Report ${idx} of ${total}`);
+    updateTally();
+    render();
+
+    const heading = resolution.querySelector('.ticket__resolution-heading');
+    if (heading) heading.focus();
+  }
+
+  function restart() {
+    tickets.forEach((ticket) => {
+      const idx = ticket.dataset.index;
+      ticket.querySelectorAll('input[type="radio"]').forEach((input) => {
+        input.checked = false;
+        input.disabled = false;
+      });
+      ticket.querySelector('.ticket__field--severity').hidden = true;
+      const resolution = ticket.querySelector('.ticket__resolution');
+      resolution.hidden = true;
+      delete resolution.dataset.match;
+      const submitBtn = ticket.querySelector('.ticket__submit');
+      submitBtn.hidden = false;
+      submitBtn.disabled = true;
+    });
+    index = 0;
+    tallyEl.hidden = true;
+    render();
+    root.querySelector('.qa-lab__progress-label')?.focus?.();
+  }
+
+  tickets.forEach((ticket) => {
+    const idx = ticket.dataset.index;
+    const severityField = ticket.querySelector('.ticket__field--severity');
+    const severityInputs = ticket.querySelectorAll(`input[name="severity-${idx}"]`);
+
+    ticket.querySelectorAll(`input[name="verdict-${idx}"]`).forEach((input) => {
+      input.addEventListener('change', () => {
+        const isDefect = input.checked && input.value === 'defect';
+        severityField.hidden = !isDefect;
+        if (!isDefect) severityInputs.forEach((s) => { s.checked = false; });
+        evaluateSubmitEnabled(ticket, idx);
+      });
+    });
+
+    severityInputs.forEach((input) => {
+      input.addEventListener('change', () => evaluateSubmitEnabled(ticket, idx));
+    });
+
+    ticket.querySelector('.ticket__submit').addEventListener('click', () => submitTicket(ticket));
+  });
+
+  backBtn.addEventListener('click', () => {
+    if (index > 0) { index -= 1; render(); }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (nextBtn.dataset.mode === 'restart') { restart(); return; }
+    if (index < total - 1) { index += 1; render(); }
+  });
+
+  render();
+})();

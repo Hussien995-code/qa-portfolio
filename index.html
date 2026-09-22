@@ -316,14 +316,281 @@
 
     <section id="qa-lab" class="section qa-lab" aria-labelledby="qa-lab-title">
       <div class="container">
-        <div class="qa-lab__card">
+        <div class="qa-lab__card qa-lab__intro">
           <p class="qa-lab__status">
             <span class="qa-lab__dot" aria-hidden="true"></span>
-            QA Lab — in development
+            QA Lab
           </p>
-          <h2 id="qa-lab-title" class="qa-lab__title">An interactive QA challenge.</h2>
-          <p class="qa-lab__copy">A hands-on simulation of real testing scenarios — bugs to triage, flows to break, and decisions to make under pressure. Launching soon.</p>
-          <div id="qa-lab-root" class="qa-lab__mount" aria-hidden="true"></div>
+          <h2 id="qa-lab-title" class="qa-lab__title">Triage six real-world bug reports.</h2>
+          <p class="qa-lab__copy">Six reports, presented exactly as they'd arrive — vague details, red herrings, and all. For each one: decide whether it's a genuine defect, expected behavior, or missing the information needed to judge at all. Then compare your call against the actual resolution and the reasoning behind it. Everything below runs in your browser only — nothing is recorded, stored, or sent anywhere.</p>
+        </div>
+
+        <div id="qa-lab-root" class="qa-lab__mount">
+          <div class="qa-lab__progress">
+            <span class="qa-lab__progress-label" id="qa-lab-progress-label" role="status" aria-live="polite">Report <span id="qa-lab-current">1</span> of <span id="qa-lab-total">6</span></span>
+            <span class="qa-lab__progress-tally" id="qa-lab-tally" role="status" aria-live="polite" hidden></span>
+            <div class="qa-lab__progress-bar" role="presentation"><div class="qa-lab__progress-fill" id="qa-lab-progress-fill"></div></div>
+          </div>
+
+          <div class="qa-lab__tickets">
+
+            <article class="ticket" data-ticket data-index="1" data-correct-verdict="expected">
+              <header class="ticket__head"><span class="ticket__source">Reported by — End user (support ticket)</span></header>
+              <h3 class="ticket__title">&ldquo;Reset password link doesn't work&rdquo;</h3>
+              <dl class="ticket__meta">
+                <div class="ticket__meta-row"><dt>Environment</dt><dd>Production &middot; Chrome on Android</dd></div>
+              </dl>
+              <div class="ticket__steps">
+                <p class="ticket__steps-label">Steps as reported</p>
+                <ol>
+                  <li>Requested a password reset email at 09:02.</li>
+                  <li>Opened the email and clicked the reset link at 11:15 &mdash; 2h 13m later.</li>
+                  <li>Page shows: &ldquo;This link has expired. Request a new one.&rdquo;</li>
+                </ol>
+                <p class="ticket__claim">User's claim: &ldquo;The link is broken, please fix it.&rdquo;</p>
+              </div>
+
+              <div class="ticket__triage">
+                <fieldset class="ticket__field">
+                  <legend>Your verdict</legend>
+                  <label class="ticket__radio"><input type="radio" name="verdict-1" value="defect"><span>Genuine defect</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-1" value="expected"><span>Expected behavior</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-1" value="needs-info"><span>Needs more information</span></label>
+                </fieldset>
+                <fieldset class="ticket__field ticket__field--severity" hidden>
+                  <legend>Severity</legend>
+                  <label class="ticket__radio"><input type="radio" name="severity-1" value="critical"><span>Critical</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-1" value="high"><span>High</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-1" value="medium"><span>Medium</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-1" value="low"><span>Low</span></label>
+                </fieldset>
+                <button type="button" class="btn btn--primary btn--small ticket__submit" disabled>Submit assessment</button>
+              </div>
+
+              <div class="ticket__resolution" hidden>
+                <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-compare">
+                  <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
+                  <span class="ticket__resolution-actual">Actual: <strong>Expected behavior &mdash; not a bug</strong></span>
+                </p>
+                <p class="ticket__resolution-body">Password reset tokens are intentionally single-use and time-boxed to 15 minutes from issuance &mdash; a standard control against a leaked or forwarded email being replayed later. The user's own timeline shows the link was used 2h 13m after issuance, well outside that window. The system rejected an expired token and returned a clear, actionable message rather than failing silently or exposing an internal error. This is the system working correctly, not a malfunction &mdash; the fact that the user is inconvenienced doesn't make it a defect. Confirmed against the documented 15-minute TTL policy.</p>
+              </div>
+            </article>
+
+            <article class="ticket" data-ticket data-index="2" data-correct-verdict="defect">
+              <header class="ticket__head"><span class="ticket__source">Reported by &mdash; Automated monitoring (order-total anomaly)</span></header>
+              <h3 class="ticket__title">&ldquo;Discount code appears to apply twice&rdquo;</h3>
+              <dl class="ticket__meta">
+                <div class="ticket__meta-row"><dt>Environment</dt><dd>Production &middot; checkout, all browsers</dd></div>
+              </dl>
+              <div class="ticket__steps">
+                <p class="ticket__steps-label">Steps as reported</p>
+                <ol>
+                  <li>Add an item priced at $80.00 to the cart.</li>
+                  <li>Enter a valid 20%-off code and click &ldquo;Apply&rdquo; twice in rapid succession, before the button visually updates.</li>
+                  <li>Order total reflects $51.20 instead of the expected $64.00 &mdash; roughly 40% off instead of 20%.</li>
+                </ol>
+              </div>
+
+              <div class="ticket__triage">
+                <fieldset class="ticket__field">
+                  <legend>Your verdict</legend>
+                  <label class="ticket__radio"><input type="radio" name="verdict-2" value="defect"><span>Genuine defect</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-2" value="expected"><span>Expected behavior</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-2" value="needs-info"><span>Needs more information</span></label>
+                </fieldset>
+                <fieldset class="ticket__field ticket__field--severity" hidden>
+                  <legend>Severity</legend>
+                  <label class="ticket__radio"><input type="radio" name="severity-2" value="critical"><span>Critical</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-2" value="high"><span>High</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-2" value="medium"><span>Medium</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-2" value="low"><span>Low</span></label>
+                </fieldset>
+                <button type="button" class="btn btn--primary btn--small ticket__submit" disabled>Submit assessment</button>
+              </div>
+
+              <div class="ticket__resolution" hidden>
+                <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-compare">
+                  <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
+                  <span class="ticket__resolution-actual">Actual: <strong>Genuine defect</strong> &middot; for discussion, severity <strong>High</strong></span>
+                </p>
+                <p class="ticket__resolution-body">The &ldquo;Apply&rdquo; button isn't disabled or debounced while the request is in flight, so two rapid clicks fire two independent apply-discount calls before the UI reflects the first one. The discount appears to stack additively rather than the second call being treated as a no-op or replacing the first &mdash; a classic idempotency gap around a non-debounced action. Repro is reliable with any fast double-click, so this isn't a one-off flake. The severity call is genuinely debatable: some teams would call this Critical given the direct, silent revenue loss with zero user-visible error; High is the more defensible default here because there's no data exposure or security breach, and the fix (disable-on-click plus a server-side idempotency check) is small and fast &mdash; but the &ldquo;no error is shown to anyone&rdquo; part is exactly what makes it dangerous, regardless of the exact label.</p>
+              </div>
+            </article>
+
+            <article class="ticket" data-ticket data-index="3" data-correct-verdict="needs-info">
+              <header class="ticket__head"><span class="ticket__source">Reported by &mdash; Support agent (relaying customer complaints)</span></header>
+              <h3 class="ticket__title">&ldquo;Intermittent 500 errors on GET /api/orders&rdquo;</h3>
+              <dl class="ticket__meta">
+                <div class="ticket__meta-row"><dt>Environment</dt><dd>Production API &middot; no further detail given</dd></div>
+              </dl>
+              <div class="ticket__steps">
+                <p class="ticket__steps-label">Report as received</p>
+                <p class="ticket__snippet">&ldquo;Some customers say the orders page sometimes fails to load. Not sure how often or who's affected. Happens randomly.&rdquo;</p>
+                <p class="ticket__claim">Attached: none &mdash; no request ID, timestamp, account ID, or response body.</p>
+              </div>
+
+              <div class="ticket__triage">
+                <fieldset class="ticket__field">
+                  <legend>Your verdict</legend>
+                  <label class="ticket__radio"><input type="radio" name="verdict-3" value="defect"><span>Genuine defect</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-3" value="expected"><span>Expected behavior</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-3" value="needs-info"><span>Needs more information</span></label>
+                </fieldset>
+                <fieldset class="ticket__field ticket__field--severity" hidden>
+                  <legend>Severity</legend>
+                  <label class="ticket__radio"><input type="radio" name="severity-3" value="critical"><span>Critical</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-3" value="high"><span>High</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-3" value="medium"><span>Medium</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-3" value="low"><span>Low</span></label>
+                </fieldset>
+                <button type="button" class="btn btn--primary btn--small ticket__submit" disabled>Submit assessment</button>
+              </div>
+
+              <div class="ticket__resolution" hidden>
+                <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-compare">
+                  <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
+                  <span class="ticket__resolution-actual">Actual: <strong>Needs more information</strong></span>
+                </p>
+                <p class="ticket__resolution-body">There isn't enough here to reproduce or even confirm the defect as described. What turns this into something actionable: (1) one exact timestamp plus the affected account/user ID, so the matching server-side request can be located in logs; (2) the actual response body or error code &mdash; &ldquo;intermittent 500&rdquo; alone could originate from dozens of unrelated code paths; (3) whether it correlates with a specific query parameter, page size, or date range &mdash; a customer with an unusually large order history could be hitting a pagination or timeout edge case that only shows up for them; (4) whether it's really intermittent for one user, or only looks that way because different, unrelated users are each hitting different causes. Filing this now with a guessed severity would send someone chasing the wrong lead. Correct next step: go back to support and request a specific timestamp and account ID from one affected customer.</p>
+              </div>
+            </article>
+
+            <article class="ticket" data-ticket data-index="4" data-correct-verdict="defect">
+              <header class="ticket__head"><span class="ticket__source">Reported by &mdash; QA exploratory session</span></header>
+              <h3 class="ticket__title">&ldquo;Bio field shows 51/50 at the maximum allowed length&rdquo;</h3>
+              <dl class="ticket__meta">
+                <div class="ticket__meta-row"><dt>Environment</dt><dd>Staging &middot; profile edit form, stated limit 50 characters</dd></div>
+              </dl>
+              <div class="ticket__steps">
+                <p class="ticket__steps-label">Steps as reported</p>
+                <ol>
+                  <li>Open profile edit, focus the Bio field (UI states a 50-character limit).</li>
+                  <li>Type exactly 50 characters.</li>
+                  <li>Counter reads &ldquo;51/50&rdquo; instead of &ldquo;50/50&rdquo;; a 52nd character can still be typed.</li>
+                </ol>
+              </div>
+
+              <div class="ticket__triage">
+                <fieldset class="ticket__field">
+                  <legend>Your verdict</legend>
+                  <label class="ticket__radio"><input type="radio" name="verdict-4" value="defect"><span>Genuine defect</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-4" value="expected"><span>Expected behavior</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-4" value="needs-info"><span>Needs more information</span></label>
+                </fieldset>
+                <fieldset class="ticket__field ticket__field--severity" hidden>
+                  <legend>Severity</legend>
+                  <label class="ticket__radio"><input type="radio" name="severity-4" value="critical"><span>Critical</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-4" value="high"><span>High</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-4" value="medium"><span>Medium</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-4" value="low"><span>Low</span></label>
+                </fieldset>
+                <button type="button" class="btn btn--primary btn--small ticket__submit" disabled>Submit assessment</button>
+              </div>
+
+              <div class="ticket__resolution" hidden>
+                <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-compare">
+                  <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
+                  <span class="ticket__resolution-actual">Actual: <strong>Genuine defect</strong> &middot; for discussion, severity <strong>Low</strong></span>
+                </p>
+                <p class="ticket__resolution-body">Classic boundary-value bug: the displayed counter and the actual input ceiling disagree at the exact limit (49 / 50 / 51), which points to the counter being computed separately from the enforcement check rather than sharing one source of truth. More important than the cosmetic &ldquo;51/50&rdquo; text is what it implies &mdash; if the counter is wrong at the boundary, the true enforced ceiling (50? 51? unbounded?) needs to be tested directly rather than assumed. Severity is Low: no data loss, no blocked workflow, the form can still be submitted &mdash; but it's a real, 100%-reproducible defect worth fixing, and a good tester follows up on what it implies about enforcement rather than closing the ticket once the visible symptom is explained.</p>
+              </div>
+            </article>
+
+            <article class="ticket" data-ticket data-index="5" data-correct-verdict="expected">
+              <header class="ticket__head"><span class="ticket__source">Reported by &mdash; End user (mobile worker)</span></header>
+              <h3 class="ticket__title">&ldquo;Can't clock in &mdash; app says 'Too early'&rdquo;</h3>
+              <dl class="ticket__meta">
+                <div class="ticket__meta-row"><dt>Environment</dt><dd>Production &middot; mobile app, shift scheduled 14:00&ndash;22:00</dd></div>
+              </dl>
+              <div class="ticket__steps">
+                <p class="ticket__steps-label">Steps as reported</p>
+                <ol>
+                  <li>Arrived at the job site at 13:35.</li>
+                  <li>Opened the app and tapped &ldquo;Clock In.&rdquo;</li>
+                  <li>App shows &ldquo;Too early to clock in&rdquo;; the button stays disabled.</li>
+                </ol>
+                <p class="ticket__claim">User's claim: &ldquo;I'm on-site and ready to work, the app won't let me clock in.&rdquo;</p>
+              </div>
+
+              <div class="ticket__triage">
+                <fieldset class="ticket__field">
+                  <legend>Your verdict</legend>
+                  <label class="ticket__radio"><input type="radio" name="verdict-5" value="defect"><span>Genuine defect</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-5" value="expected"><span>Expected behavior</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-5" value="needs-info"><span>Needs more information</span></label>
+                </fieldset>
+                <fieldset class="ticket__field ticket__field--severity" hidden>
+                  <legend>Severity</legend>
+                  <label class="ticket__radio"><input type="radio" name="severity-5" value="critical"><span>Critical</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-5" value="high"><span>High</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-5" value="medium"><span>Medium</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-5" value="low"><span>Low</span></label>
+                </fieldset>
+                <button type="button" class="btn btn--primary btn--small ticket__submit" disabled>Submit assessment</button>
+              </div>
+
+              <div class="ticket__resolution" hidden>
+                <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-compare">
+                  <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
+                  <span class="ticket__resolution-actual">Actual: <strong>Expected behavior &mdash; not a bug</strong></span>
+                </p>
+                <p class="ticket__resolution-body">Per the documented shift-eligibility rule, clock-in opens 15 minutes before the scheduled start &mdash; 13:45 for a 14:00 shift. The attempt was at 13:35, ten minutes before that window opens, so the rejection is the system correctly enforcing a documented business rule. This is an easy one to misjudge under pressure: the user's frustration is legitimate &mdash; they're on-site and ready &mdash; but &ldquo;the user is inconvenienced&rdquo; and &ldquo;the system has a defect&rdquo; are different questions. Worth raising separately as a UX suggestion (e.g. a countdown to 13:45 instead of a flat &ldquo;too early&rdquo;), but that's a product conversation, not a bug fix.</p>
+              </div>
+            </article>
+
+            <article class="ticket" data-ticket data-index="6" data-correct-verdict="defect">
+              <header class="ticket__head"><span class="ticket__source">Reported by &mdash; Security-conscious user</span></header>
+              <h3 class="ticket__title">&ldquo;Order details visible by editing the URL&rdquo;</h3>
+              <dl class="ticket__meta">
+                <div class="ticket__meta-row"><dt>Environment</dt><dd>Production &middot; web app, authenticated session</dd></div>
+              </dl>
+              <div class="ticket__steps">
+                <p class="ticket__steps-label">Steps as reported</p>
+                <ol>
+                  <li>Logged in as User A, opened &ldquo;My Orders,&rdquo; clicked order #48213 (belongs to User A). URL: <code>/orders/48213</code>.</li>
+                  <li>Manually changed the URL to <code>/orders/48214</code> (sequential ID) while still logged in as User A.</li>
+                  <li>Page loaded and displayed order #48214's full details &mdash; items, shipping address, and the last 4 digits of the payment card &mdash; despite belonging to a different account.</li>
+                </ol>
+              </div>
+
+              <div class="ticket__triage">
+                <fieldset class="ticket__field">
+                  <legend>Your verdict</legend>
+                  <label class="ticket__radio"><input type="radio" name="verdict-6" value="defect"><span>Genuine defect</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-6" value="expected"><span>Expected behavior</span></label>
+                  <label class="ticket__radio"><input type="radio" name="verdict-6" value="needs-info"><span>Needs more information</span></label>
+                </fieldset>
+                <fieldset class="ticket__field ticket__field--severity" hidden>
+                  <legend>Severity</legend>
+                  <label class="ticket__radio"><input type="radio" name="severity-6" value="critical"><span>Critical</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-6" value="high"><span>High</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-6" value="medium"><span>Medium</span></label>
+                  <label class="ticket__radio"><input type="radio" name="severity-6" value="low"><span>Low</span></label>
+                </fieldset>
+                <button type="button" class="btn btn--primary btn--small ticket__submit" disabled>Submit assessment</button>
+              </div>
+
+              <div class="ticket__resolution" hidden>
+                <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-compare">
+                  <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
+                  <span class="ticket__resolution-actual">Actual: <strong>Genuine defect</strong> &middot; for discussion, severity <strong>Critical</strong></span>
+                </p>
+                <p class="ticket__resolution-body">Textbook Insecure Direct Object Reference (IDOR): the endpoint authenticates that <em>a</em> valid session exists but never authorizes that the requested order actually belongs to the requesting user. Sequential, guessable IDs make this trivially scriptable &mdash; no special tooling needed to enumerate every order in the system, exposing shipping addresses and partial payment data at scale. This meets the bar for Critical: real customer PII and partial financial data exposed, no workaround available to the business, exploitable by any authenticated user. Immediate mitigation: an ownership check (<code>order.userId === session.userId</code>) before returning any order resource, on every read path &mdash; and audit sibling endpoints (invoices, shipping labels, support tickets) for the same missing check, since this class of bug rarely appears in exactly one place.</p>
+              </div>
+            </article>
+
+          </div>
+
+          <div class="qa-lab__nav">
+            <button type="button" class="btn btn--ghost qa-lab__back" id="qa-lab-back" disabled>&larr; Back</button>
+            <button type="button" class="btn btn--primary qa-lab__next" id="qa-lab-next" disabled>Next report &rarr;</button>
+          </div>
         </div>
       </div>
     </section>
