@@ -199,15 +199,24 @@
   let noticeTimer = null;
 
   function scrollTicketIntoView() {
-    // Move focus to the new ticket's heading first (preventScroll, so this
-    // alone can't scroll) — this is the more useful landing point for
-    // keyboard/AT users regardless. The scroll itself runs last and uses
-    // 'auto' (instant) rather than 'smooth': a multi-frame smooth-scroll
-    // animation queued here was observed being cut short/interrupted when
-    // anything else touched focus/scroll state in the same task, landing
-    // users partway through the ticket instead of at its top.
-    tickets[index].querySelector('.ticket__title')?.focus?.({ preventScroll: true });
-    tickets[index].scrollIntoView({ behavior: 'auto', block: 'start' });
+    const ticket = tickets[index];
+    // Move focus to the new ticket's heading (preventScroll — a plain
+    // .focus() here can't scroll on its own) — the useful landing point
+    // for keyboard/AT users regardless of the scroll bug below.
+    ticket.querySelector('.ticket__title')?.focus?.({ preventScroll: true });
+    // scrollIntoView() called synchronously right after render() toggles
+    // `hidden` was consistently landing partway into the ticket instead of
+    // at its top — reproducible across both smooth and instant `behavior`,
+    // and regardless of focus ordering, so it isn't an animation/focus
+    // interruption. Deferring to the next frame and computing the target
+    // manually sidesteps whatever stale-geometry timing caused it: by the
+    // time this runs, the browser has fully committed the show/hide layout
+    // change from render().
+    requestAnimationFrame(() => {
+      const scrollPaddingTop = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      const targetY = window.scrollY + ticket.getBoundingClientRect().top - scrollPaddingTop;
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'auto' });
+    });
   }
 
   const showNotice = (text) => {
