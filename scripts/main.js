@@ -66,6 +66,15 @@
   const cards = document.querySelectorAll('.skill-card');
   const openSet = new Set();
 
+  // Real mice/trackpads only — on touch devices, tapping a card synthesizes
+  // a mouseenter/mouseleave pair around the click. On the first element a
+  // visitor ever touches on the page there is no prior hover state for the
+  // browser to reconcile against, so that synthetic mouseleave can fire
+  // immediately after the tap activates the card, closing it right back up.
+  // That's the "first card won't stay open on Android" bug: hover-driven
+  // close logic firing off a touch gesture, not a per-card cosmetic issue.
+  const supportsHoverClose = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
   const closeSkill = (skill) => {
     skill.dataset.open = 'false';
     skill.querySelector('.skill__name').setAttribute('aria-expanded', 'false');
@@ -98,17 +107,34 @@
     openSet.clear();
   };
 
+  const toggleCard = (card) => {
+    if (card.dataset.active === 'true') {
+      deactivateAll();
+    } else {
+      activateCard(card);
+    }
+  };
+
   cards.forEach((card) => {
     card.dataset.active = 'false';
-    card.addEventListener('click', () => activateCard(card));
-    card.addEventListener('mouseleave', () => {
-      if (card.dataset.active === 'true') deactivateAll();
+    // Only the header toggles the card open/closed. Content clicks (skill
+    // rows, tooltips) must not bubble into an accidental collapse.
+    const header = card.querySelector('.skill-card__header');
+    header.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleCard(card);
     });
+    if (supportsHoverClose) {
+      card.addEventListener('mouseleave', () => {
+        if (card.dataset.active === 'true') deactivateAll();
+      });
+    }
   });
 
   skills.forEach((skill) => {
     const trigger = skill.querySelector('.skill__name');
-    trigger.addEventListener('click', () => {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isOpen = skill.dataset.open === 'true';
       if (isOpen) {
         closeSkill(skill);
@@ -184,10 +210,17 @@
   const currentEl = document.getElementById('qa-lab-current');
   const tallyEl = document.getElementById('qa-lab-tally');
   const progressFill = document.getElementById('qa-lab-progress-fill');
+  const progressBlock = root.querySelector('.qa-lab__progress');
+  const ticketsWrap = root.querySelector('.qa-lab__tickets');
+  const navWrap = root.querySelector('.qa-lab__nav');
   const backBtn = document.getElementById('qa-lab-back');
   const nextBtn = document.getElementById('qa-lab-next');
   const nextLabel = document.getElementById('qa-lab-next-label');
   const notice = document.querySelector('.qa-notice');
+  const completePanel = document.getElementById('qa-lab-complete');
+  const completeScoreEl = document.getElementById('qa-lab-complete-score');
+  const completeTitle = completePanel.querySelector('.qa-lab__complete-title');
+  const reviewBtn = document.getElementById('qa-lab-review-btn');
 
   const VERDICT_LABELS = {
     defect: 'Genuine defect',
@@ -197,6 +230,8 @@
 
   let index = 0;
   let noticeTimer = null;
+  let completed = false;
+  let reviewing = false;
 
   function scrollTicketIntoView() {
     const ticket = tickets[index];
@@ -225,7 +260,19 @@
     tallyEl.textContent = `Verdict matched the actual resolution on ${matched} of ${submitted.length} so far`;
   }
 
+  function matchedCount() {
+    return tickets.filter((t) => t.querySelector('.ticket__resolution').dataset.match === 'true').length;
+  }
+
   function render() {
+    const showTickets = !completed || reviewing;
+    progressBlock.hidden = !showTickets;
+    ticketsWrap.hidden = !showTickets;
+    navWrap.hidden = !showTickets;
+    completePanel.hidden = showTickets;
+
+    if (!showTickets) return;
+
     tickets.forEach((t, i) => { t.hidden = i !== index; });
     currentEl.textContent = String(index + 1);
     progressFill.style.width = `${((index + 1) / total) * 100}%`;
@@ -235,15 +282,34 @@
     const submitted = isSubmitted(current);
     const isLast = index === total - 1;
 
-    if (isLast && submitted) {
-      nextLabel.textContent = 'Restart exercise';
-      nextBtn.dataset.mode = 'restart';
+    if (completed) {
+      if (isLast) {
+        nextLabel.textContent = 'Back to summary';
+        nextBtn.dataset.mode = 'summary';
+        nextBtn.disabled = false;
+      } else {
+        nextLabel.textContent = 'Next report';
+        nextBtn.dataset.mode = 'next';
+        nextBtn.disabled = false;
+      }
+    } else if (isLast && submitted) {
+      nextLabel.textContent = 'See your results';
+      nextBtn.dataset.mode = 'finish';
       nextBtn.disabled = false;
     } else {
       nextLabel.textContent = 'Next report';
       nextBtn.dataset.mode = 'next';
       nextBtn.disabled = !submitted;
     }
+  }
+
+  function goToSummary() {
+    completed = true;
+    reviewing = false;
+    completeScoreEl.textContent = String(matchedCount());
+    render();
+    completeTitle?.focus?.({ preventScroll: true });
+    completePanel.scrollIntoView({ behavior: 'auto', block: 'start' });
   }
 
   function evaluateSubmitEnabled(ticket, idx) {
@@ -281,28 +347,6 @@
     if (heading) heading.focus();
   }
 
-  function restart() {
-    tickets.forEach((ticket) => {
-      const idx = ticket.dataset.index;
-      ticket.querySelectorAll('input[type="radio"]').forEach((input) => {
-        input.checked = false;
-        input.disabled = false;
-      });
-      ticket.querySelector('.ticket__field--severity').hidden = true;
-      const resolution = ticket.querySelector('.ticket__resolution');
-      resolution.hidden = true;
-      delete resolution.dataset.match;
-      const submitBtn = ticket.querySelector('.ticket__submit');
-      submitBtn.hidden = false;
-      submitBtn.disabled = true;
-    });
-    index = 0;
-    tallyEl.hidden = true;
-    render();
-    scrollTicketIntoView();
-    root.querySelector('.qa-lab__progress-label')?.focus?.({ preventScroll: true });
-  }
-
   tickets.forEach((ticket) => {
     const idx = ticket.dataset.index;
     const severityField = ticket.querySelector('.ticket__field--severity');
@@ -329,8 +373,16 @@
   });
 
   nextBtn.addEventListener('click', () => {
-    if (nextBtn.dataset.mode === 'restart') { restart(); return; }
+    const mode = nextBtn.dataset.mode;
+    if (mode === 'finish' || mode === 'summary') { goToSummary(); return; }
     if (index < total - 1) { index += 1; render(); scrollTicketIntoView(); }
+  });
+
+  reviewBtn.addEventListener('click', () => {
+    reviewing = true;
+    index = 0;
+    render();
+    scrollTicketIntoView();
   });
 
   render();

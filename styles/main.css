@@ -1395,7 +1395,21 @@ a:focus-visible,
   gap: var(--space-2);
 }
 .qa-lab__nav-icon { flex-shrink: 0; }
-.qa-lab__next[data-mode="restart"] .qa-lab__nav-icon--next { display: none; }
+.qa-lab__next[data-mode="summary"] .qa-lab__nav-icon--next { display: none; }
+
+.qa-lab__complete {
+  margin-top: var(--space-4);
+}
+.qa-lab__complete-title {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-3);
+  max-width: 52ch;
+}
+.qa-lab__complete-title:focus-visible {
+  outline: 2px solid var(--c-accent-soft);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
 
 /*
  * .qa-lab__back is a native <button>, unlike the site's other .btn--ghost

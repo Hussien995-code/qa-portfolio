@@ -15,8 +15,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="styles/main.css?v=19">
-  <script src="scripts/main.js?v=19" defer></script>
+  <link rel="stylesheet" href="styles/main.css?v=20">
+  <script src="scripts/main.js?v=20" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -590,6 +590,15 @@
           <div class="qa-lab__nav">
             <button type="button" class="btn btn--ghost qa-lab__back" id="qa-lab-back" disabled><svg class="qa-lab__nav-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Back</span></button>
             <button type="button" class="btn btn--primary qa-lab__next" id="qa-lab-next" disabled><span id="qa-lab-next-label">Next report</span><svg class="qa-lab__nav-icon qa-lab__nav-icon--next" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+
+          <div class="qa-lab__card qa-lab__complete" id="qa-lab-complete" hidden>
+            <p class="qa-lab__status">
+              <span class="qa-lab__dot" aria-hidden="true"></span>
+              All six reports completed
+            </p>
+            <h3 class="qa-lab__complete-title" tabindex="-1">Your verdict matched the actual resolution on <span id="qa-lab-complete-score">0</span> of 6 reports.</h3>
+            <button type="button" class="btn btn--primary" id="qa-lab-review-btn">Review your reports</button>
           </div>
         </div>
       </div>
