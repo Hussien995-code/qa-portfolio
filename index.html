@@ -327,7 +327,7 @@
 
         <div id="qa-lab-root" class="qa-lab__mount">
           <div class="qa-lab__progress">
-            <span class="qa-lab__progress-label" id="qa-lab-progress-label" role="status" aria-live="polite">Report <span id="qa-lab-current">1</span> of <span id="qa-lab-total">6</span></span>
+            <span class="qa-lab__progress-label" id="qa-lab-progress-label" role="status" aria-live="polite" tabindex="-1">Report <span id="qa-lab-current">1</span> of <span id="qa-lab-total">6</span></span>
             <span class="qa-lab__progress-tally" id="qa-lab-tally" role="status" aria-live="polite" hidden></span>
             <div class="qa-lab__progress-bar" role="presentation"><div class="qa-lab__progress-fill" id="qa-lab-progress-fill"></div></div>
           </div>
@@ -588,8 +588,8 @@
           </div>
 
           <div class="qa-lab__nav">
-            <button type="button" class="btn btn--ghost qa-lab__back" id="qa-lab-back" disabled>&larr; Back</button>
-            <button type="button" class="btn btn--primary qa-lab__next" id="qa-lab-next" disabled>Next report &rarr;</button>
+            <button type="button" class="btn btn--ghost qa-lab__back" id="qa-lab-back" disabled><svg class="qa-lab__nav-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Back</span></button>
+            <button type="button" class="btn btn--primary qa-lab__next" id="qa-lab-next" disabled><span id="qa-lab-next-label">Next report</span><svg class="qa-lab__nav-icon qa-lab__nav-icon--next" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
         </div>
       </div>

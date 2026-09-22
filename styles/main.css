@@ -1179,6 +1179,11 @@ a:focus-visible,
   font-weight: 600;
   color: var(--c-text);
 }
+.qa-lab__progress-label:focus-visible {
+  outline: 2px solid var(--c-accent-soft);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
 .qa-lab__progress-tally {
   font-size: var(--fs-xs);
   color: var(--c-text-quiet);
@@ -1353,7 +1358,11 @@ a:focus-visible,
   color: var(--c-accent-soft);
   margin-bottom: var(--space-2);
 }
-.ticket__resolution-heading:focus-visible { outline: none; }
+.ticket__resolution-heading:focus-visible {
+  outline: 2px solid var(--c-accent-soft);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
 .ticket__resolution-compare {
   display: flex;
   flex-wrap: wrap;
@@ -1377,6 +1386,24 @@ a:focus-visible,
   align-items: center;
   gap: var(--space-2);
 }
+.qa-lab__nav-icon { flex-shrink: 0; }
+.qa-lab__next[data-mode="restart"] .qa-lab__nav-icon--next { display: none; }
+
+/*
+ * .qa-lab__back is a native <button>, unlike the site's other .btn--ghost
+ * instance (an <a>, which has no UA chrome). .btn--ghost only overrides
+ * `color`, so this button kept the browser's default white/grey button
+ * fill and border, fighting the light ghost-button text color and going
+ * illegible on hover/focus/active when that native fill brightens further.
+ */
+.qa-lab__back {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.qa-lab__back:active { color: var(--c-accent-soft); transform: translateX(2px); }
 
 @media (max-width: 580px) {
   .qa-lab__nav { flex-direction: column-reverse; align-items: stretch; }

@@ -186,6 +186,7 @@
   const progressFill = document.getElementById('qa-lab-progress-fill');
   const backBtn = document.getElementById('qa-lab-back');
   const nextBtn = document.getElementById('qa-lab-next');
+  const nextLabel = document.getElementById('qa-lab-next-label');
   const notice = document.querySelector('.qa-notice');
 
   const VERDICT_LABELS = {
@@ -196,6 +197,12 @@
 
   let index = 0;
   let noticeTimer = null;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function scrollTicketIntoView() {
+    tickets[index].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+  }
 
   const showNotice = (text) => {
     if (!notice) return;
@@ -229,11 +236,11 @@
     const isLast = index === total - 1;
 
     if (isLast && submitted) {
-      nextBtn.textContent = 'Restart exercise';
+      nextLabel.textContent = 'Restart exercise';
       nextBtn.dataset.mode = 'restart';
       nextBtn.disabled = false;
     } else {
-      nextBtn.textContent = 'Next report →';
+      nextLabel.textContent = 'Next report';
       nextBtn.dataset.mode = 'next';
       nextBtn.disabled = !submitted;
     }
@@ -292,7 +299,8 @@
     index = 0;
     tallyEl.hidden = true;
     render();
-    root.querySelector('.qa-lab__progress-label')?.focus?.();
+    scrollTicketIntoView();
+    root.querySelector('.qa-lab__progress-label')?.focus?.({ preventScroll: true });
   }
 
   tickets.forEach((ticket) => {
@@ -317,12 +325,12 @@
   });
 
   backBtn.addEventListener('click', () => {
-    if (index > 0) { index -= 1; render(); }
+    if (index > 0) { index -= 1; render(); scrollTicketIntoView(); }
   });
 
   nextBtn.addEventListener('click', () => {
     if (nextBtn.dataset.mode === 'restart') { restart(); return; }
-    if (index < total - 1) { index += 1; render(); }
+    if (index < total - 1) { index += 1; render(); scrollTicketIntoView(); }
   });
 
   render();
