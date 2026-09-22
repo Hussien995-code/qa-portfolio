@@ -213,9 +213,12 @@
     // time this runs, the browser has fully committed the show/hide layout
     // change from render().
     requestAnimationFrame(() => {
+      const scrollYBefore = window.scrollY;
       const scrollPaddingTop = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-      const targetY = window.scrollY + ticket.getBoundingClientRect().top - scrollPaddingTop;
+      const rectTop = ticket.getBoundingClientRect().top;
+      const targetY = scrollYBefore + rectTop - scrollPaddingTop;
       window.scrollTo({ top: Math.max(0, targetY), behavior: 'auto' });
+      document.body.dataset.qaLabDebug = JSON.stringify({ index, scrollYBefore, rectTop, scrollPaddingTop, targetY, scrollYAfter: window.scrollY });
     });
   }
 
