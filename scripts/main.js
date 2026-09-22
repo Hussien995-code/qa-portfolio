@@ -228,6 +228,13 @@
     'needs-info': 'Needs more information',
   };
 
+  const SEVERITY_LABELS = {
+    critical: 'Critical',
+    high: 'High',
+    medium: 'Medium',
+    low: 'Low',
+  };
+
   let index = 0;
   let noticeTimer = null;
   let completed = false;
@@ -338,6 +345,24 @@
     resolution.dataset.match = String(match);
     resolution.hidden = false;
     ticket.querySelector('.ticket__submit').hidden = true;
+
+    const statusEl = resolution.querySelector('.ticket__resolution-status');
+    statusEl.dataset.status = match ? 'correct' : 'incorrect';
+    statusEl.querySelector('.ticket__resolution-status-text').textContent = match ? 'Correct' : 'Incorrect';
+
+    const correctAnswerEl = resolution.querySelector('.ticket__resolution-correct-answer');
+    correctAnswerEl.hidden = match;
+    if (!match) {
+      correctAnswerEl.querySelector('.ticket__resolution-correct-verdict-value').textContent = VERDICT_LABELS[ticket.dataset.correctVerdict];
+      const severityWrap = correctAnswerEl.querySelector('.ticket__resolution-correct-severity-wrap');
+      const correctSeverity = ticket.dataset.correctSeverity;
+      if (ticket.dataset.correctVerdict === 'defect' && correctSeverity) {
+        severityWrap.hidden = false;
+        severityWrap.querySelector('.ticket__resolution-correct-severity-value').textContent = SEVERITY_LABELS[correctSeverity];
+      } else {
+        severityWrap.hidden = true;
+      }
+    }
 
     showNotice(`Assessment logged — Report ${idx} of ${total}`);
     updateTally();

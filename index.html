@@ -15,8 +15,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="styles/main.css?v=21">
-  <script src="scripts/main.js?v=21" defer></script>
+  <link rel="stylesheet" href="styles/main.css?v=22">
+  <script src="scripts/main.js?v=22" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -369,6 +369,16 @@
 
               <div class="ticket__resolution" hidden>
                 <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-status" data-status="">
+                  <svg class="ticket__resolution-status-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                    <path class="ticket__resolution-status-icon-correct" d="M3 8.5l3.2 3.2L13 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="ticket__resolution-status-icon-incorrect" d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="ticket__resolution-status-text"></span>
+                </p>
+                <p class="ticket__resolution-correct-answer" hidden>
+                  Correct verdict: <strong class="ticket__resolution-correct-verdict-value"></strong><span class="ticket__resolution-correct-severity-wrap" hidden> &middot; Correct severity: <strong class="ticket__resolution-correct-severity-value"></strong></span>
+                </p>
                 <p class="ticket__resolution-compare">
                   <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
                   <span class="ticket__resolution-actual">Actual: <strong>Expected behavior &mdash; not a bug</strong></span>
@@ -377,7 +387,7 @@
               </div>
             </article>
 
-            <article class="ticket" data-ticket data-index="2" data-correct-verdict="defect">
+            <article class="ticket" data-ticket data-index="2" data-correct-verdict="defect" data-correct-severity="high">
               <header class="ticket__head"><span class="ticket__source">Reported by &mdash; Automated monitoring (order-total anomaly)</span></header>
               <h3 class="ticket__title" tabindex="-1">&ldquo;Discount code appears to apply twice&rdquo;</h3>
               <dl class="ticket__meta">
@@ -411,6 +421,16 @@
 
               <div class="ticket__resolution" hidden>
                 <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-status" data-status="">
+                  <svg class="ticket__resolution-status-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                    <path class="ticket__resolution-status-icon-correct" d="M3 8.5l3.2 3.2L13 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="ticket__resolution-status-icon-incorrect" d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="ticket__resolution-status-text"></span>
+                </p>
+                <p class="ticket__resolution-correct-answer" hidden>
+                  Correct verdict: <strong class="ticket__resolution-correct-verdict-value"></strong><span class="ticket__resolution-correct-severity-wrap" hidden> &middot; Correct severity: <strong class="ticket__resolution-correct-severity-value"></strong></span>
+                </p>
                 <p class="ticket__resolution-compare">
                   <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
                   <span class="ticket__resolution-actual">Actual: <strong>Genuine defect</strong> &middot; for discussion, severity <strong>High</strong></span>
@@ -450,6 +470,16 @@
 
               <div class="ticket__resolution" hidden>
                 <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-status" data-status="">
+                  <svg class="ticket__resolution-status-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                    <path class="ticket__resolution-status-icon-correct" d="M3 8.5l3.2 3.2L13 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="ticket__resolution-status-icon-incorrect" d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="ticket__resolution-status-text"></span>
+                </p>
+                <p class="ticket__resolution-correct-answer" hidden>
+                  Correct verdict: <strong class="ticket__resolution-correct-verdict-value"></strong><span class="ticket__resolution-correct-severity-wrap" hidden> &middot; Correct severity: <strong class="ticket__resolution-correct-severity-value"></strong></span>
+                </p>
                 <p class="ticket__resolution-compare">
                   <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
                   <span class="ticket__resolution-actual">Actual: <strong>Needs more information</strong></span>
@@ -458,7 +488,7 @@
               </div>
             </article>
 
-            <article class="ticket" data-ticket data-index="4" data-correct-verdict="defect">
+            <article class="ticket" data-ticket data-index="4" data-correct-verdict="defect" data-correct-severity="low">
               <header class="ticket__head"><span class="ticket__source">Reported by &mdash; QA exploratory session</span></header>
               <h3 class="ticket__title" tabindex="-1">&ldquo;Bio field shows 51/50 at the maximum allowed length&rdquo;</h3>
               <dl class="ticket__meta">
@@ -492,6 +522,16 @@
 
               <div class="ticket__resolution" hidden>
                 <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-status" data-status="">
+                  <svg class="ticket__resolution-status-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                    <path class="ticket__resolution-status-icon-correct" d="M3 8.5l3.2 3.2L13 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="ticket__resolution-status-icon-incorrect" d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="ticket__resolution-status-text"></span>
+                </p>
+                <p class="ticket__resolution-correct-answer" hidden>
+                  Correct verdict: <strong class="ticket__resolution-correct-verdict-value"></strong><span class="ticket__resolution-correct-severity-wrap" hidden> &middot; Correct severity: <strong class="ticket__resolution-correct-severity-value"></strong></span>
+                </p>
                 <p class="ticket__resolution-compare">
                   <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
                   <span class="ticket__resolution-actual">Actual: <strong>Genuine defect</strong> &middot; for discussion, severity <strong>Low</strong></span>
@@ -535,6 +575,16 @@
 
               <div class="ticket__resolution" hidden>
                 <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-status" data-status="">
+                  <svg class="ticket__resolution-status-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                    <path class="ticket__resolution-status-icon-correct" d="M3 8.5l3.2 3.2L13 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="ticket__resolution-status-icon-incorrect" d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="ticket__resolution-status-text"></span>
+                </p>
+                <p class="ticket__resolution-correct-answer" hidden>
+                  Correct verdict: <strong class="ticket__resolution-correct-verdict-value"></strong><span class="ticket__resolution-correct-severity-wrap" hidden> &middot; Correct severity: <strong class="ticket__resolution-correct-severity-value"></strong></span>
+                </p>
                 <p class="ticket__resolution-compare">
                   <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
                   <span class="ticket__resolution-actual">Actual: <strong>Expected behavior &mdash; not a bug</strong></span>
@@ -543,7 +593,7 @@
               </div>
             </article>
 
-            <article class="ticket" data-ticket data-index="6" data-correct-verdict="defect">
+            <article class="ticket" data-ticket data-index="6" data-correct-verdict="defect" data-correct-severity="critical">
               <header class="ticket__head"><span class="ticket__source">Reported by &mdash; Security-conscious user</span></header>
               <h3 class="ticket__title" tabindex="-1">&ldquo;Order details visible by editing the URL&rdquo;</h3>
               <dl class="ticket__meta">
@@ -577,6 +627,16 @@
 
               <div class="ticket__resolution" hidden>
                 <h4 class="ticket__resolution-heading" tabindex="-1">Actual resolution</h4>
+                <p class="ticket__resolution-status" data-status="">
+                  <svg class="ticket__resolution-status-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                    <path class="ticket__resolution-status-icon-correct" d="M3 8.5l3.2 3.2L13 4.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path class="ticket__resolution-status-icon-incorrect" d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="ticket__resolution-status-text"></span>
+                </p>
+                <p class="ticket__resolution-correct-answer" hidden>
+                  Correct verdict: <strong class="ticket__resolution-correct-verdict-value"></strong><span class="ticket__resolution-correct-severity-wrap" hidden> &middot; Correct severity: <strong class="ticket__resolution-correct-severity-value"></strong></span>
+                </p>
                 <p class="ticket__resolution-compare">
                   <span class="ticket__resolution-you">Your call: <strong class="ticket__resolution-you-value"></strong></span>
                   <span class="ticket__resolution-actual">Actual: <strong>Genuine defect</strong> &middot; for discussion, severity <strong>Critical</strong></span>
