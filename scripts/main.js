@@ -202,6 +202,12 @@
 
   function scrollTicketIntoView() {
     tickets[index].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+    // The Back/Next button that triggered this stays focused after the click,
+    // and the browser's own "keep the focused element in view" behavior fights
+    // this scroll, pulling the viewport back down toward the button. Moving
+    // focus to the new ticket's heading (without re-triggering a scroll) is
+    // both the fix and the more useful landing point for keyboard/AT users.
+    tickets[index].querySelector('.ticket__title')?.focus?.({ preventScroll: true });
   }
 
   const showNotice = (text) => {

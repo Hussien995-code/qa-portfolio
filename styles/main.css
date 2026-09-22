@@ -1225,6 +1225,11 @@ a:focus-visible,
   margin-bottom: var(--space-3);
   color: var(--c-text);
 }
+.ticket__title:focus-visible {
+  outline: 2px solid var(--c-accent-soft);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
 
 .ticket__meta {
   display: flex;
