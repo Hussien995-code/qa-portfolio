@@ -715,22 +715,25 @@ a:focus-visible,
     0 0 200px 40px rgba(127, 212, 227, 0.18);
 }
 
-/* Left column (1, 4): rotate outward */
-.skill-card:nth-child(1)[data-active="true"] .skill-card__inner,
-.skill-card:nth-child(4)[data-active="true"] .skill-card__inner {
-  transform: scale(1.05) rotateY(10deg);
-}
-
-/* Center column (2, 5): scale only */
-.skill-card:nth-child(2)[data-active="true"] .skill-card__inner,
-.skill-card:nth-child(5)[data-active="true"] .skill-card__inner {
+/*
+ * All active cards scale only — no rotateY. A rotateY tilt was previously
+ * applied to columns 1/3/4/6 (via `perspective` on .skill-card and
+ * `transform-style: preserve-3d` on .skill-card__inner). Verified in
+ * Chromium (Playwright, both real mouse clicks and touch taps, desktop and
+ * mobile viewports): once that rotation settles, elementFromPoint() at a
+ * skill row's visual center still resolves to its <button>, but the click
+ * Chromium actually dispatches for an input at that same point lands on
+ * the parent <li> instead — the row silently fails to expand. This is not
+ * a touch-only or narrow-viewport issue: it reproduces with plain mouse
+ * clicks at desktop width too, any time the card has been open long enough
+ * for the transition to finish (i.e. normal usage, not a fast synthetic
+ * click racing the animation). The scale-only center column (2, 5) never
+ * exhibited this — 2D transforms hit-test correctly. Root cause is
+ * Chromium's hit-testing under a 3D-transformed (preserve-3d) subtree, not
+ * fixable in CSS other than dropping the 3D transform.
+ */
+.skill-card[data-active="true"] .skill-card__inner {
   transform: scale(1.05);
-}
-
-/* Right column (3, 6): rotate inward */
-.skill-card:nth-child(3)[data-active="true"] .skill-card__inner,
-.skill-card:nth-child(6)[data-active="true"] .skill-card__inner {
-  transform: scale(1.05) rotateY(-10deg);
 }
 .skill-card[data-active="true"]::before {
   opacity: 1;
