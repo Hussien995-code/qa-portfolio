@@ -198,16 +198,16 @@
   let index = 0;
   let noticeTimer = null;
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   function scrollTicketIntoView() {
-    tickets[index].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
-    // The Back/Next button that triggered this stays focused after the click,
-    // and the browser's own "keep the focused element in view" behavior fights
-    // this scroll, pulling the viewport back down toward the button. Moving
-    // focus to the new ticket's heading (without re-triggering a scroll) is
-    // both the fix and the more useful landing point for keyboard/AT users.
+    // Move focus to the new ticket's heading first (preventScroll, so this
+    // alone can't scroll) — this is the more useful landing point for
+    // keyboard/AT users regardless. The scroll itself runs last and uses
+    // 'auto' (instant) rather than 'smooth': a multi-frame smooth-scroll
+    // animation queued here was observed being cut short/interrupted when
+    // anything else touched focus/scroll state in the same task, landing
+    // users partway through the ticket instead of at its top.
     tickets[index].querySelector('.ticket__title')?.focus?.({ preventScroll: true });
+    tickets[index].scrollIntoView({ behavior: 'auto', block: 'start' });
   }
 
   const showNotice = (text) => {
