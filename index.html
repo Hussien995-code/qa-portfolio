@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="styles/main.css?v=22">
+  <link rel="stylesheet" href="styles/main.css?v=23">
   <script src="scripts/main.js?v=22" defer></script>
 </head>
 <body>
@@ -44,6 +44,118 @@
         <div class="hero__content">
           <p class="hero__eyebrow">QA Engineer</p>
           <h1 id="hero-title" class="hero__headline">Quality as a craft,<br>not a checklist.</h1>
+          <script>
+            /* Hero headline typewriter. Inline so it runs before the headline's
+               first paint. Each character becomes a span that holds its space
+               while hidden, so nothing reflows; the heading carries the full
+               text as its accessible name throughout. When typing ends the
+               original markup is restored. Reduced motion keeps the static
+               headline and the original CSS timings. */
+            (function () {
+              var h = document.getElementById('hero-title');
+              var hero = h && h.closest('.hero');
+              if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+              var original = h.innerHTML;
+              var label = '';
+              var chars = [];
+              var frag = document.createDocumentFragment();
+              Array.prototype.forEach.call(h.childNodes, function (node) {
+                if (node.nodeType !== 3) {
+                  label += node.nodeName === 'BR' ? ' ' : node.textContent;
+                  frag.appendChild(node.cloneNode(true));
+                  return;
+                }
+                label += node.data;
+                Array.from(node.data).forEach(function (c) {
+                  var s = document.createElement('span');
+                  s.className = 'tw-char';
+                  s.setAttribute('aria-hidden', 'true');
+                  s.textContent = c;
+                  frag.appendChild(s);
+                  chars.push(s);
+                });
+              });
+              if (!chars.length) return;
+
+              // Rhythm: brisk first line, a checkpoint pause after "craft,", a
+              // slightly slower second line, and a short beat before the ".".
+              var times = [];
+              var t = 750;
+              var line2 = false;
+              chars.forEach(function (s, i) {
+                times.push(t);
+                var c = s.textContent;
+                var next = chars[i + 1] && chars[i + 1].textContent;
+                if (c === ',') { t += 420; line2 = true; }
+                else if (next === '.') t += 200;
+                else t += line2 ? 58 + Math.random() * 16 : 48 + Math.random() * 14;
+              });
+              var end = times[times.length - 1];
+
+              var caret = document.createElement('span');
+              caret.className = 'tw-caret';
+              caret.setAttribute('aria-hidden', 'true');
+
+              // While typing, each character paints its own slice of the heading's
+              // gradient: Safari will not clip a parent's gradient through
+              // children that fade or blur.
+              h.style.setProperty('--tw-gradient', getComputedStyle(h).backgroundImage);
+              function paint(s) {
+                s.style.backgroundSize = h.clientWidth + 'px ' + h.clientHeight + 'px';
+                s.style.backgroundPosition = -s.offsetLeft + 'px ' + -s.offsetTop + 'px';
+              }
+              function repaint() { chars.slice(0, typed).forEach(paint); }
+
+              h.setAttribute('aria-label', label.replace(/\s+/g, ' ').trim());
+              h.textContent = '';
+              h.appendChild(frag);
+              h.insertBefore(caret, chars[0]);
+              h.classList.add('hero__headline--typewriter', 'is-typing');
+              // The lede and buttons follow the headline instead of arriving mid-type.
+              hero.style.setProperty('--tw-lede-delay', Math.round(end - 150) + 'ms');
+              hero.style.setProperty('--tw-actions-delay', Math.round(end + 150) + 'ms');
+              hero.classList.add('hero--typewriter');
+
+              var start = performance.now();
+              var typed = 0;
+              var done = false;
+
+              function finish() {
+                if (done) return;
+                done = true;
+                h.innerHTML = original;
+                h.removeAttribute('aria-label');
+                h.classList.remove('is-typing');
+                h.style.removeProperty('--tw-gradient');
+                document.removeEventListener('visibilitychange', onHidden);
+                window.removeEventListener('resize', repaint);
+              }
+              function onHidden() { if (document.hidden) finish(); }
+              document.addEventListener('visibilitychange', onHidden);
+              window.addEventListener('resize', repaint);
+              if (document.fonts) document.fonts.ready.then(repaint);
+
+              function frame(now) {
+                if (done) return;
+                var elapsed = now - start;
+                while (typed < chars.length && times[typed] <= elapsed) {
+                  paint(chars[typed]);
+                  chars[typed].classList.add('is-typed');
+                  chars[typed].after(caret);
+                  typed++;
+                }
+                if (typed === chars.length) {
+                  setTimeout(function () { caret.classList.add('is-leaving'); }, 350);
+                  setTimeout(finish, 700);
+                  return;
+                }
+                caret.classList.toggle('is-idle', typed > 0 && times[typed] - elapsed > 200);
+                requestAnimationFrame(frame);
+              }
+              requestAnimationFrame(frame);
+            })();
+          </script>
           <p class="hero__lede">I help engineering teams ship with confidence through deliberate test strategy, reliable automation, and quality practices that scale with the product.</p>
           <div class="hero__actions">
             <a href="#qa-lab" class="btn btn--primary">Enter QA Lab</a>
