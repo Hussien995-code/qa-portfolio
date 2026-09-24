@@ -62,99 +62,84 @@
   }
 
   /* ==================== SKILL CARDS & SKILLS ==================== */
-  const skills = document.querySelectorAll('.skill');
+  // Each card holds one piece of state: the index of its open skill, or -1.
+  // Every interaction only changes that number and re-renders the whole card
+  // from it, so at most one skill per card can ever be open and the visual
+  // state, aria-expanded and panel visibility cannot drift apart. Cards are
+  // independent of each other.
   const cards = document.querySelectorAll('.skill-card');
-  const openSet = new Set();
-
-  // Real mice/trackpads only — on touch devices, tapping a card synthesizes
-  // a mouseenter/mouseleave pair around the click. On the first element a
-  // visitor ever touches on the page there is no prior hover state for the
-  // browser to reconcile against, so that synthetic mouseleave can fire
-  // immediately after the tap activates the card, closing it right back up.
-  // That's the "first card won't stay open on Android" bug: hover-driven
-  // close logic firing off a touch gesture, not a per-card cosmetic issue.
-  const supportsHoverClose = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-  const closeSkill = (skill) => {
-    skill.dataset.open = 'false';
-    skill.querySelector('.skill__name').setAttribute('aria-expanded', 'false');
-    skill.querySelector('.skill__test').setAttribute('aria-hidden', 'true');
-  };
-
-  const openSkill = (skill) => {
-    skill.dataset.open = 'true';
-    skill.querySelector('.skill__name').setAttribute('aria-expanded', 'true');
-    skill.querySelector('.skill__test').setAttribute('aria-hidden', 'false');
-  };
-
-  const activateCard = (card) => {
-    if (card.dataset.active === 'true') return;
-    cards.forEach((c) => {
-      if (c !== card) c.dataset.active = 'false';
-    });
-    openSet.forEach((skill) => {
-      if (skill.closest('.skill-card') !== card) {
-        closeSkill(skill);
-        openSet.delete(skill);
-      }
-    });
-    card.dataset.active = 'true';
-  };
-
-  const deactivateAll = () => {
-    cards.forEach((c) => { c.dataset.active = 'false'; });
-    openSet.forEach(closeSkill);
-    openSet.clear();
-  };
-
-  const toggleCard = (card) => {
-    if (card.dataset.active === 'true') {
-      deactivateAll();
-    } else {
-      activateCard(card);
-    }
-  };
 
   cards.forEach((card) => {
-    card.dataset.active = 'false';
-    // Only the header toggles the card open/closed. Content clicks (skill
-    // rows, tooltips) must not bubble into an accidental collapse.
-    const header = card.querySelector('.skill-card__header');
-    header.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleCard(card);
-    });
-    if (supportsHoverClose) {
-      card.addEventListener('mouseleave', () => {
-        if (card.dataset.active === 'true') deactivateAll();
-      });
-    }
-  });
+    const skills = Array.from(card.querySelectorAll('.skill'));
+    if (!skills.length) return;
+    let openIndex = -1;
 
-  skills.forEach((skill) => {
-    const trigger = skill.querySelector('.skill__name');
-    trigger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = skill.dataset.open === 'true';
-      if (isOpen) {
-        closeSkill(skill);
-        openSet.delete(skill);
-      } else {
-        openSkill(skill);
-        openSet.add(skill);
+    skills.forEach((skill, i) => {
+      const trigger = skill.querySelector('.skill__name');
+      const panel = skill.querySelector('.skill__test');
+      panel.id = `skill-${card.dataset.id}-${i + 1}`;
+      trigger.setAttribute('aria-controls', panel.id);
+      panel.inert = true;
+      trigger.addEventListener('click', () => {
+        openIndex = openIndex === i ? -1 : i;
+        render();
+      });
+    });
+
+    function render() {
+      skills.forEach((skill, i) => {
+        const open = i === openIndex;
+        skill.dataset.open = String(open);
+        if (open) skill.dataset.viewed = 'true';
+        skill.querySelector('.skill__name').setAttribute('aria-expanded', String(open));
+        const panel = skill.querySelector('.skill__test');
+        panel.setAttribute('aria-hidden', String(!open));
+        panel.inert = !open;
+      });
+      card.dataset.hasOpen = String(openIndex !== -1);
+    }
+
+    // Escape closes this card's open skill only, and only while focus is in it.
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && openIndex !== -1) {
+        openIndex = -1;
+        render();
       }
     });
-  });
 
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.skill-card')) {
-      deactivateAll();
+    render();
+
+    // The case count comes from the list itself, so it cannot go stale.
+    const index = card.querySelector('.skill-card__index');
+    if (index) {
+      const count = document.createElement('span');
+      count.className = 'skill-card__count';
+      count.textContent = ` · ${skills.length} ${skills.length === 1 ? 'case' : 'cases'}`;
+      index.append(count);
     }
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') deactivateAll();
-  });
+  // One-time discovery hint: the first time the Skills grid is mostly in view,
+  // the first skill's ring and chevron rehearse the open state once. Skipped
+  // for reduced motion, once per session, and if the visitor has already
+  // opened something.
+  const hintSkill = document.querySelector('.skill-card .skill');
+  const HINT_KEY = 'skills-hint-shown';
+  let hintShown = false;
+  try { hintShown = sessionStorage.getItem(HINT_KEY) === '1'; } catch (_) { /* storage blocked */ }
+  if (hintSkill && !prefersReducedMotion && !hintShown && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      io.disconnect();
+      try { sessionStorage.setItem(HINT_KEY, '1'); } catch (_) { /* storage blocked */ }
+      if (document.querySelector('.skill[data-viewed="true"]')) return;
+      hintSkill.classList.add('is-hinting');
+      hintSkill.addEventListener('animationend', (e) => {
+        if (e.animationName === 'skill-hint-ring') hintSkill.classList.remove('is-hinting');
+      });
+    }, { threshold: 0.6 });
+    io.observe(hintSkill.closest('.skill-card'));
+  }
 })();
 
 (() => {
